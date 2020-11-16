@@ -7,6 +7,8 @@ services:
     image: guacamole/guacd
     container_name: guacd
     restart: always
+    networks:
+      - default_net
 
 
   # docker run --name some-guacamole -p 8080:8080 guacamole/guacamole
@@ -25,6 +27,8 @@ services:
       POSTGRES_USER: guacamole_user
     ports:
       - 8088:8080
+    networks:
+      - default_net
 
 
   postgres:
@@ -40,7 +44,14 @@ services:
     #docker run --rm guacamole/guacamole /opt/guacamole/bin/initdb.sh --postgres > initdb.sql 
     - ./init:/docker-entrypoint-initdb.d:ro
     - guac_volume:/var/lib/postgresql/data
+    networks:
+      - default_net
 
 
 volumes:
   guac_volume:
+
+
+networks:
+  default_net:
+    external: true      
